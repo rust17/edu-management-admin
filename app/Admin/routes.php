@@ -17,4 +17,7 @@ Route::group([
 
     // 教师管理
     $router->resource('teachers', 'TeacherController');
+
+    // 学生管理
+    $router->resource('students', 'StudentController');
 });
