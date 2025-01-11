@@ -12,5 +12,6 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // 管理后台登录页面
+    return redirect()->route('admin.login');
 });
