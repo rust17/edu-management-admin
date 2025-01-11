@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Course;
 use App\Models\Invoice;
+use App\Models\Traits\HasPermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasPermission;
 
     /**
      * The attributes that are mass assignable.
@@ -32,17 +33,9 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
-    /**
-     * 判断当前用户是否可以看到指定角色的菜单
-     * 由于我们不使用 Laravel-admin 的角色权限系统，直接返回 true
-     *
-     * @param array $roles
-     * @return bool
-     */
-    public function visible($roles = []): bool
-    {
-        return true;
-    }
+    const ROLE_ADMIN = 'admin';
+    const ROLE_TEACHER = 'teacher';
+    const ROLE_STUDENT = 'student';
 
     // 获取该教师的所有课程
     public function teacherCourses()

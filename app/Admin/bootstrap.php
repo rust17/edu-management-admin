@@ -19,3 +19,5 @@
  */
 
 Encore\Admin\Form::forget(['map', 'editor']);
+// 复写内置 view
+app('view')->prependNamespace('admin', resource_path('views/admin/override/'));
