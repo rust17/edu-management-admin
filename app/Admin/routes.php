@@ -12,7 +12,9 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
-
+    // 首页
     $router->get('/', 'HomeController@index')->name('home');
 
+    // 教师管理
+    $router->resource('teachers', 'TeacherController');
 });

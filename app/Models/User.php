@@ -4,14 +4,13 @@ namespace App\Models;
 
 use App\Models\Course;
 use App\Models\Invoice;
-use Encore\Admin\Auth\Database\HasPermissions;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasPermissions;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,11 +33,15 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
 
     /**
-     * @inheritdoc
+     * 判断当前用户是否可以看到指定角色的菜单
+     * 由于我们不使用 Laravel-admin 的角色权限系统，直接返回 true
+     *
+     * @param array $roles
+     * @return bool
      */
-    public function cannot($ability, $arguments = [])
+    public function visible($roles = []): bool
     {
-        return $this->cant($ability, $arguments);
+        return true;
     }
 
     // 获取该教师的所有课程
