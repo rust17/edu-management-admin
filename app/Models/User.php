@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Course;
 use App\Models\Invoice;
+use Encore\Admin\Auth\Database\HasPermissions;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'role', 'remember_token'
     ];
 
     /**
@@ -31,6 +32,14 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['deleted_at'];
+
+    /**
+     * @inheritdoc
+     */
+    public function cannot($ability, $arguments = [])
+    {
+        return $this->cant($ability, $arguments);
+    }
 
     // 获取该教师的所有课程
     public function teacherCourses()

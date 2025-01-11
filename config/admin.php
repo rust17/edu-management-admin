@@ -123,8 +123,7 @@ return [
 
         'providers' => [
             'admin' => [
-                'driver' => 'eloquent',
-                'model'  => Encore\Admin\Auth\Database\Administrator::class,
+                'driver' => 'admin',
             ],
         ],
 
@@ -176,16 +175,17 @@ return [
         'connection' => '',
 
         // User tables and model.
-        'users_table' => 'admin_users',
-        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
+        'users_table' => 'users',
+        'users_model' => App\Models\User::class,
 
+        // 不使用 laravel-admin 自带的用户、角色、权限
         // Role table and model.
-        'roles_table' => 'admin_roles',
-        'roles_model' => Encore\Admin\Auth\Database\Role::class,
+        // 'roles_table' => 'admin_roles',
+        // 'roles_model' => Encore\Admin\Auth\Database\Role::class,
 
         // Permission table and model.
-        'permissions_table' => 'admin_permissions',
-        'permissions_model' => Encore\Admin\Auth\Database\Permission::class,
+        // 'permissions_table' => 'admin_permissions',
+        // 'permissions_model' => Encore\Admin\Auth\Database\Permission::class,
 
         // Menu table and model.
         'menu_table' => 'admin_menu',
@@ -193,10 +193,10 @@ return [
 
         // Pivot table for table above.
         'operation_log_table'    => 'admin_operation_log',
-        'user_permissions_table' => 'admin_user_permissions',
-        'role_users_table'       => 'admin_role_users',
-        'role_permissions_table' => 'admin_role_permissions',
-        'role_menu_table'        => 'admin_role_menu',
+        // 'user_permissions_table' => 'admin_user_permissions',
+        // 'role_users_table'       => 'admin_role_users',
+        // 'role_permissions_table' => 'admin_role_permissions',
+        // 'role_menu_table'        => 'admin_role_menu',
     ],
 
     /*
@@ -232,14 +232,14 @@ return [
     | Indicates whether to check route permission.
     |--------------------------------------------------------------------------
     */
-    'check_route_permission' => true,
+    'check_route_permission' => false,
 
     /*
     |--------------------------------------------------------------------------
     | Indicates whether to check menu roles.
     |--------------------------------------------------------------------------
     */
-    'check_menu_roles'       => true,
+    'check_menu_roles'       => false,
 
     /*
     |--------------------------------------------------------------------------
