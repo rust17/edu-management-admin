@@ -3,12 +3,13 @@
 namespace App\Admin\Controllers;
 
 use App\Models\User;
+use App\Models\Invoice;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;
 class StudentController extends AdminController
 {
     /**
@@ -63,6 +64,44 @@ class StudentController extends AdminController
         $show->field('email', '邮箱');
         $show->field('created_at', '创建时间');
         $show->field('updated_at', '更新时间');
+
+        // 展示学生参加的课程信息
+        $show->studentCourses('参加的课程', function ($courses) {
+            $courses->id('课程ID');
+            $courses->name('课程名称');
+            $courses->year_month('开课时间')->display(function ($yearMonth) {
+                return Carbon::parse($yearMonth)->format('Y年m月');
+            });
+            $courses->fee('课程费用')->display(function ($fee) {
+                return "￥{$fee}";
+            });
+            $courses->teacher()->name('授课教师');
+
+            // 禁用课程列表的增加、删除、编辑按钮
+            $courses->disableCreateButton();
+            $courses->disableActions();
+        });
+
+        // 展示学生的账单信息
+        $show->invoices('账单信息', function ($invoices) {
+            $invoices->id('账单ID');
+            $invoices->course()->name('课程名称');
+            $invoices->amount('金额')->display(function ($amount) {
+                return "￥{$amount}";
+            });
+            $invoices->status('状态')->display(function ($status) {
+                return [
+                    Invoice::STATUS_PENDING => '待支付',
+                    Invoice::STATUS_PAID => '已支付',
+                    Invoice::STATUS_FAILED => '支付失败'
+                ][$status] ?? '未知';
+            });
+            $invoices->created_at('创建时间');
+
+            // 禁用账单列表的增加、删除、编辑按钮
+            $invoices->disableCreateButton();
+            $invoices->disableActions();
+        });
 
         return $show;
     }

@@ -8,6 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class TeacherController extends AdminController
 {
@@ -63,6 +64,25 @@ class TeacherController extends AdminController
         $show->field('email', '邮箱');
         $show->field('created_at', '创建时间');
         $show->field('updated_at', '更新时间');
+
+        // 展示教师的课程信息
+        $show->teacherCourses('开设的课程', function ($courses) {
+            $courses->id('课程ID');
+            $courses->name('课程名称');
+            $courses->year_month('开课时间')->display(function ($yearMonth) {
+                return Carbon::parse($yearMonth)->format('Y年m月');
+            });
+            $courses->fee('课程费用')->display(function ($fee) {
+                return "￥{$fee}";
+            });
+            $courses->students('学生数')->display(function ($students) {
+                return count($students);
+            });
+
+            // 禁用课程列表的增加、删除、编辑按钮
+            $courses->disableCreateButton();
+            $courses->disableActions();
+        });
 
         return $show;
     }

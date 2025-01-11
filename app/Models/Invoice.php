@@ -15,6 +15,10 @@ class Invoice extends Model
 
     protected $dates = ['deleted_at'];
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_PAID = 'paid';
+    const STATUS_FAILED = 'failed';
+
     // 获取关联的课程
     public function course()
     {
