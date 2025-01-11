@@ -33,6 +33,8 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
+    public $avatar = '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg';
+
     const ROLE_ADMIN = 'admin';
     const ROLE_TEACHER = 'teacher';
     const ROLE_STUDENT = 'student';

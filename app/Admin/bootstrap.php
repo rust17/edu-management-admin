@@ -1,5 +1,7 @@
 <?php
 
+use Encore\Admin\Facades\Admin;
+
 /**
  * Laravel-admin - admin builder based on Laravel.
  * @author z-song <https://github.com/z-song>
@@ -19,5 +21,9 @@
  */
 
 Encore\Admin\Form::forget(['map', 'editor']);
+
 // 复写内置 view
 app('view')->prependNamespace('admin', resource_path('views/admin/override/'));
+
+// 引入自定义样式
+Admin::css('/css/admin/custom.css');
