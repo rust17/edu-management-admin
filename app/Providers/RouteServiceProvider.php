@@ -35,7 +35,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
+        // 因为这是一个基于 laravel-admin 的后台管理系统，不需要 api 路由，所以暂时注释掉
+        // $this->mapApiRoutes();
 
         $this->mapWebRoutes();
 
