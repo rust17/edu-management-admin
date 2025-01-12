@@ -1,58 +1,80 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# 教务管理系统
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+基于 Laravel 和 Laravel-admin 开发的教务管理系统，提供课程管理、学生管理、教师管理等功能。
 
-## About Laravel
+## 主要特点
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### 1. 基于角色的权限管理
+- 系统管理员：可以管理所有功能
+- 教师：可以管理学生信息
+- 基于自定义的权限管理中间件
+- 菜单和路由的统一权限控制
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. 用户管理
+- 教师管理：仅系统管理员可访问
+- 学生管理：系统管理员和教师可访问
+- 用户信息的增删改查
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+### 3. 课程管理
+- 课程信息的完整管理
+- 教师与课程的关联
+- 学生选课管理
+- 课程费用管理
 
-## Learning Laravel
+### 4. 账单管理
+- 学生课程费用账单
+- 支付状态跟踪
+- 账单历史记录
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+### 5. 界面定制
+- 响应式设计
+- 清晰的数据展示
+- 简洁的操作流程
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## 技术栈
 
-## Laravel Sponsors
+- PHP 7.1+
+- Laravel 5.5
+- Laravel-admin 1.8
+- PostgreSQL 12+
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+## 安装
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+1. 克隆代码
 
-## Contributing
+2. 安装依赖
+```bash
+composer install --no-dev
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. 配置环境
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+4. 配置数据库
+```bash
+echo "DB_CONNECTION=pgsql
+DB_HOST=your_host
+DB_PORT=your_port
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password" >> .env
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+php artisan migrate
+php artisan db:seed # 如果需要初始化数据就执行
+```
+
+5. 初始化菜单数据
+```sql
+insert into "public"."admin_menu" ("created_at", "icon", "id", "order", "parent_id", "permission", "title", "updated_at", "uri") values ('2025-01-11 16:31:34', 'fa-book', 1, 0, 0, 'admin', '教师管理', '2025-01-11 23:00:32', NULL), ('2025-01-11 16:32:04', 'fa-bars', 2, 0, 1, 'admin', '教师列表', '2025-01-11 23:00:51', 'teachers'), ('2025-01-11 16:32:14', 'fa-users', 3, 0, 0, 'admin,teacher', '学生管理', '2025-01-11 23:03:03', NULL), ('2025-01-11 16:32:21', 'fa-bars', 4, 0, 3, 'admin,teacher', '学生列表', '2025-01-11 16:32:21', 'students')
+```
+
+6. 访问服务
+
+nginx 配置域名指向 public/index.php，访问 http://your_domain 即可
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The MIT License (MIT).
