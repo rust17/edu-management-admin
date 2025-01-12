@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\User;
+use App\Models\Teacher;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -112,6 +113,15 @@ class TeacherController extends AdminController
             // 如果密码为空，则不修改密码
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = Hash::make($form->password);
+            }
+        });
+
+        $form->saved(function (Form $form) {
+            // 当创建教师时，自动创建教师扩展信息
+            if ($form->isCreating()) {
+                Teacher::create([
+                    'user_id' => $form->model()->id,
+                ]);
             }
         });
 

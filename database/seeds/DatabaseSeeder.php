@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             CourseSeeder::class,
             CourseStudentSeeder::class,
-            InvoiceSeeder::class
+            InvoiceSeeder::class,
+            TeachersTableSeeder::class,
+            StudentsTableSeeder::class,
         ]);
     }
 }

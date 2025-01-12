@@ -56,4 +56,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invoice::class, 'student_id');
     }
+
+    /**
+     * 获取教师扩展信息
+     */
+    public function teacherProfile()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    /**
+     * 获取学生扩展信息
+     */
+    public function studentProfile()
+    {
+        return $this->hasOne(Student::class);
+    }
 }
