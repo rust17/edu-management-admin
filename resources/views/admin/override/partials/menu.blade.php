@@ -1,4 +1,4 @@
-@if(Admin::user()->visible($item['permission']))
+@if(App\Models\Traits\HasPermission::visible(Admin::user(), $item['permission']))
     @if(!isset($item['children']))
         <li>
             @if(url()->isValidUrl($item['uri']))

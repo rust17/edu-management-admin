@@ -123,7 +123,8 @@ return [
 
         'providers' => [
             'admin' => [
-                'driver' => 'admin',
+                'driver' => 'eloquent',
+                'model'  => Encore\Admin\Auth\Database\Administrator::class,
             ],
         ],
 
@@ -175,10 +176,10 @@ return [
         'connection' => '',
 
         // User tables and model.
-        'users_table' => 'users',
-        'users_model' => App\Models\User::class,
+        'users_table' => 'admin_users',
+        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
 
-        // 不使用 laravel-admin 自带的用户、角色、权限
+        // 不使用 laravel-admin 自带的角色、权限
         // Role table and model.
         // 'roles_table' => 'admin_roles',
         // 'roles_model' => Encore\Admin\Auth\Database\Role::class,

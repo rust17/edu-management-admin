@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <strong>教务管理系统</strong> &copy; {{ date('Y') }}
+                <strong>教务管理系统后台</strong> &copy; {{ date('Y') }}
                 <span class="hidden-xs">
                     All rights reserved.
                 </span>

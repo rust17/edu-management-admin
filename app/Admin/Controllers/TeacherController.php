@@ -5,6 +5,8 @@ namespace App\Admin\Controllers;
 use App\Models\User;
 use App\Models\Teacher;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Role;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -117,11 +119,19 @@ class TeacherController extends AdminController
         });
 
         $form->saved(function (Form $form) {
-            // 当创建教师时，自动创建教师扩展信息
+            // 当创建教师时，自动创建教师扩展信息，自动创建管理后台用户并分配角色
             if ($form->isCreating()) {
                 Teacher::create([
                     'user_id' => $form->model()->id,
                 ]);
+
+                $admin = new Administrator();
+                $admin->username = $form->model()->email;
+                $admin->password = $form->model()->password;
+                $admin->name = $form->model()->name;
+                $admin->user_id = $form->model()->id;
+                $admin->role = 'teacher';
+                $admin->save();
             }
         });
 

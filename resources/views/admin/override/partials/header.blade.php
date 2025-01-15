@@ -46,7 +46,7 @@
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                @if(Admin::user()->isAdmin())
+                                @if(Admin::user()->role == 'admin')
                                 <a href="{{ admin_url('auth/menu') }}" class="btn btn-default btn-flat">{{ trans('admin.menu') }}</a>
                                 @endif
                             </div>
