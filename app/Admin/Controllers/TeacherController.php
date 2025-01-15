@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Teacher;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Auth\Database\Administrator;
-use Encore\Admin\Auth\Database\Role;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -107,6 +106,12 @@ class TeacherController extends AdminController
                 return $form->isEditing() ? $form->model()->password : '';
             });
 
+        // 管理后台用户信息
+        if ($form->isEditing()) {
+            $form->text('adminProfile.username', '管理后台姓名')->required();
+            $form->password('adminProfile.password', '管理后台密码')->required();
+        }
+
         // 设置默认角色为教师
         $form->hidden('role')->default('teacher');
 
@@ -136,5 +141,31 @@ class TeacherController extends AdminController
         });
 
         return $form;
+    }
+
+    public function update($id)
+    {
+        $user = User::findOrFail($id);
+        $request = request();
+
+        if ($request->password && $user->password != $request->password) {
+            $request->password = Hash::make($request->password);
+        }
+
+        $user->update($request->only(['name', 'email']) + ['password' => $request->password]);
+
+        $adminPassword = $user->adminProfile->password;
+        if ($request->adminProfile['password'] &&
+            $user->adminProfile->password != $request->adminProfile['password']
+        ) {
+            $adminPassword = Hash::make($request->adminProfile['password']);
+        }
+
+        $user->adminProfile->update([
+            'username' => $request->adminProfile['username'],
+            'password' => $adminPassword,
+        ]);
+
+        admin_success('保存成功');
     }
 }

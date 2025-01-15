@@ -72,6 +72,9 @@ php artisan db:seed # 如果需要初始化数据就执行
 insert into "public"."admin_users" ("avatar", "created_at", "id", "name", "password", "remember_token", "role", "updated_at", "user_id", "username") values (NULL, '2025-01-15 12:41:11', 1, 'Administrator', '$2y$10$sxUptBd288bndbZkEV7JQu6XmwO891hX3PGHwczBkObh44.kLNPdO', NULL, 'admin', '2025-01-15 12:41:11', NULL, 'admin')
 2. 初始化菜单数据
 insert into "public"."admin_menu" ("created_at", "icon", "id", "order", "parent_id", "permission", "title", "updated_at", "uri") values ('2025-01-11 16:31:34', 'fa-book', 1, 0, 0, 'admin', '教师管理', '2025-01-11 23:00:32', NULL), ('2025-01-11 16:32:04', 'fa-bars', 2, 0, 1, 'admin', '教师列表', '2025-01-11 23:00:51', 'teachers'), ('2025-01-11 16:32:14', 'fa-users', 3, 0, 0, 'admin,teacher', '学生管理', '2025-01-11 23:03:03', NULL), ('2025-01-11 16:32:21', 'fa-bars', 4, 0, 3, 'admin,teacher', '学生列表', '2025-01-11 16:32:21', 'students')
+3. 如果是 PostgreSQL 需要手动调整序列避免主键冲突
+SELECT setval('admin_users_id_seq', (SELECT MAX(id) FROM admin_users) + 1);
+SELECT setval('admin_menu_id_seq', (SELECT MAX(id) FROM admin_menu) + 1);
 ```
 
 6. 访问服务

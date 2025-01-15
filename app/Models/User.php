@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Course;
 use App\Models\Invoice;
 use App\Models\Traits\HasPermission;
+use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -70,5 +71,13 @@ class User extends Authenticatable
     public function studentProfile()
     {
         return $this->hasOne(Student::class);
+    }
+
+    /**
+     * 获取管理员扩展信息
+     */
+    public function adminProfile()
+    {
+        return $this->hasOne(Administrator::class);
     }
 }
