@@ -19,7 +19,8 @@ class InvoiceSeeder extends Seeder
             factory(Invoice::class)->create([
                 'course_id' => $courseStudent->course_id,
                 'student_id' => $courseStudent->student_id,
-                'amount' => $course->fee // 使用课程的费用作为发票金额
+                'amount' => $course->fee, // 使用课程的费用作为发票金额
+                'no' => Invoice::generateNo(),
             ]);
         });
     }
