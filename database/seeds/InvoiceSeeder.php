@@ -21,6 +21,7 @@ class InvoiceSeeder extends Seeder
                 'student_id' => $courseStudent->student_id,
                 'amount' => $course->fee, // 使用课程的费用作为发票金额
                 'no' => Invoice::generateNo(),
+                'sent_at' => now(),
             ]);
         });
     }

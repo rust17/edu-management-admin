@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             InvoiceSeeder::class,
             TeachersTableSeeder::class,
             StudentsTableSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }
