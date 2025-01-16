@@ -51,7 +51,7 @@ RUN composer install --optimize-autoloader --no-dev
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 
 # 复制 Nginx 配置文件
-COPY docker/nginx/default.conf /etc/nginx/sites-available/default
+COPY docker/nginx/default.conf /etc/nginx/sites-enabled/default
 
 # 复制 PHP-FPM 配置
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
