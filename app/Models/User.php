@@ -39,6 +39,36 @@ class User extends Authenticatable
     const ROLE_TEACHER = 'teacher';
     const ROLE_STUDENT = 'student';
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleting(function ($user) {
+            // 删除学生时，需要删除：学生扩展信息、学生账单信息、学生参加的课程信息
+            if ($user->role == self::ROLE_STUDENT) {
+                $user->studentProfile()->delete();
+                $user->invoices->map(function (Invoice $invoice) {
+                    $invoice->payment()->delete();
+                    $invoice->delete();
+                });
+                CourseStudent::query()->where('student_id', $user->id)->delete();
+            }
+
+            // 删除老师时，需要关联删除：老师的管理后台账号、老师的扩展信息、老师的课程信息、老师创建的账单
+            if ($user->role == self::ROLE_TEACHER) {
+                $user->teacherProfile()->delete();
+                $user->teacherCourses->map(function (Course $course) {
+                    $course->invoices->map(function (Invoice $invoice) {
+                        $invoice->payment()->delete();
+                        $invoice->delete();
+                    });
+                    CourseStudent::query()->where('course_id', $course->id)->delete();
+                    $course->delete();
+                });
+            }
+        });
+    }
+
     // 获取该教师的所有课程
     public function teacherCourses()
     {
