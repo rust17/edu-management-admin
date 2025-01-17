@@ -66,7 +66,12 @@ php artisan migrate
 php artisan db:seed # 如果需要初始化数据就执行
 ```
 
-5. 初始化菜单数据
+5. laravel-admin 配置强制 HTTPS
+```bash
+ADMIN_HTTPS=true
+```
+
+6. 初始化菜单数据
 ```sql
 1. 初始化管理后台超级管理员用户
 insert into "public"."admin_users" ("avatar", "created_at", "id", "name", "password", "remember_token", "role", "updated_at", "user_id", "username") values (NULL, '2025-01-15 12:41:11', 1, 'Administrator', '$2y$10$sxUptBd288bndbZkEV7JQu6XmwO891hX3PGHwczBkObh44.kLNPdO', NULL, 'admin', '2025-01-15 12:41:11', NULL, 'admin')
@@ -77,9 +82,46 @@ SELECT setval('admin_users_id_seq', (SELECT MAX(id) FROM admin_users) + 1);
 SELECT setval('admin_menu_id_seq', (SELECT MAX(id) FROM admin_menu) + 1);
 ```
 
-6. 访问服务
+7. 访问服务
 
 nginx 配置域名指向 public/index.php，访问 http://your_domain 即可
+
+## Docker 部署
+
+1. **构建镜像**
+```bash
+docker build -t edu-management-admin .
+```
+
+2. **运行容器**
+部署：
+```bash
+docker run -d \
+    --name edu-admin \
+    -p 8081:80 \
+    -v $(pwd)/.env:/var/www/html/.env \ <------- 可以通过挂载 .env 文件提供 Laravel 所需的环境变量
+    -e INIT_ADMIN_PASS={password} \     <------- 如果需要初始化管理员密码
+    -e INIT_ADMIN_MENU=true \           <------- 如果需要初始化管理后台菜单
+    -e APP_NAME={APP_NAME}              <------- 也可以通过 -e 提供环境变量
+    -e APP_KEY={APP_KEY}                <------- 也可以通过 -e 提供环境变量
+    -e APP_ENV=production               <------- 也可以通过 -e 提供环境变量
+    -e APP_DEBUG=false                  <------- 也可以通过 -e 提供环境变量
+    -e 你的环境变量...
+    edu-management-admin
+```
+
+3. **访问服务**
+服务将在 http://localhost:8081 上运行。
+
+4. **查看初始化日志**
+```bash
+docker logs edu-admin
+```
+
+### 部署说明
+
+- 通过设置 `INIT_ADMIN_PASS`、`INIT_ADMIN_MENU` 环境变量来初始化管理员密码和菜单
+- 既可以通过挂载 `.env` 文件来提供环境变量，也可以通过 docker 的 `-e` 参数来提供环境变量，这些环境变量会覆盖 `.env` 文件中的配置
 
 ## License
 
