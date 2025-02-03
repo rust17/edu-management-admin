@@ -10,39 +10,39 @@ use Illuminate\Support\Facades\DB;
 class AdminInit extends Command
 {
     /**
-     * 命令名称和参数
+     * Command name and arguments
      *
      * @var string
      */
     protected $signature = 'admin:init {--password=} {--menu=}';
 
     /**
-     * 命令描述
+     * Command description
      *
      * @var string
      */
-    protected $description = '初始化管理员密码和菜单';
+    protected $description = 'Initialize admin password and menu';
 
     /**
-     * 执行命令
+     * Execute command
      *
      * @return mixed
      */
     public function handle()
     {
-        // 初始化管理员密码
+        // Initialize admin password
         if ($password = $this->option('password')) {
             $this->initAdminPassword($password);
         }
 
-        // 初始化管理员菜单
+        // Initialize admin menu
         if ($menu = $this->option('menu')) {
             $this->initAdminMenu($menu);
         }
     }
 
     /**
-     * 初始化管理员密码
+     * Initialize admin password
      *
      * @param string $password
      */
@@ -60,37 +60,37 @@ class AdminInit extends Command
 
             $admin->save();
 
-            $this->info('管理员账号已初始化');
+            $this->info('Admin account initialized');
         } catch (\Exception $e) {
-            $this->error('初始化管理员密码失败: ' . $e->getMessage());
+            $this->error('Failed to initialize admin password: ' . $e->getMessage());
         }
     }
 
     /**
-     * 初始化管理后台菜单
+     * Initialize admin menu
      *
      * @param string $menu
      */
     protected function initAdminMenu($menu)
     {
         try {
-            // 清空现有菜单
+            // Clear existing menu
             DB::table('admin_menu')->truncate();
 
-            // 创建菜单
+            // Create menu
             DB::table('admin_menu')->insert([
                 [
-                'id' => 1,
-                'title' => '教师管理',
-                'icon' => 'fa-book',
-                'uri' => null,
-                'parent_id' => 0,
-                'order' => 0,
-                'permission' => 'admin',
+                    'id' => 1,
+                    'title' => 'Teacher Management',
+                    'icon' => 'fa-book',
+                    'uri' => null,
+                    'parent_id' => 0,
+                    'order' => 0,
+                    'permission' => 'admin',
                 ],
                 [
                     'id' => 2,
-                    'title' => '教师列表',
+                    'title' => 'Teacher List',
                     'icon' => 'fa-bars',
                     'uri' => 'teachers',
                     'parent_id' => 1,
@@ -99,7 +99,7 @@ class AdminInit extends Command
                 ],
                 [
                     'id' => 3,
-                    'title' => '学生管理',
+                    'title' => 'Student Management',
                     'icon' => 'fa-users',
                     'uri' => null,
                     'parent_id' => 0,
@@ -108,7 +108,7 @@ class AdminInit extends Command
                 ],
                 [
                     'id' => 4,
-                    'title' => '学生列表',
+                    'title' => 'Student List',
                     'icon' => 'fa-bars',
                     'uri' => 'students',
                     'parent_id' => 3,
@@ -117,9 +117,9 @@ class AdminInit extends Command
                 ]
             ]);
 
-            $this->info('管理后台菜单已初始化');
+            $this->info('Admin menu initialized');
         } catch (\Exception $e) {
-            $this->error('初始化管理后台菜单失败: ' . $e->getMessage());
+            $this->error('Failed to initialize admin menu: ' . $e->getMessage());
         }
     }
 }

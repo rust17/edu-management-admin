@@ -9,16 +9,16 @@ class CourseStudentSeeder extends Seeder
 {
     public function run()
     {
-        // 获取所有课程和学生
+        // Get all courses and students
         $courses = Course::all();
         $students = User::where('role', 'student')->get();
 
-        // 为每个课程随机分配 5-10 个学生
+        // Randomly assign 5-10 students to each course
         $courses->each(function ($course) use ($students) {
-            // 随机获取 5-10 个学生 ID
+            // Get random 5-10 student IDs
             $studentIds = $students->random(rand(5, 10))->pluck('id');
 
-            // 创建课程-学生关联
+            // Create course-student associations
             $studentIds->each(function ($studentId) use ($course) {
                 CourseStudent::create([
                     'course_id' => $course->id,

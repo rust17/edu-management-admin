@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => '教务系统-管理后台',
+    'name' => 'Education System - Admin Dashboard',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>教务系统</b> 管理后台',
+    'logo' => '<b>Education System</b> Admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>教务</b>',
+    'logo-mini' => '<b>EDU</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => '教务系统 管理后台',
+    'title' => 'Education System Admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +179,7 @@ return [
         'users_table' => 'admin_users',
         'users_model' => Encore\Admin\Auth\Database\Administrator::class,
 
-        // 不使用 laravel-admin 自带的角色、权限
+        // Don't use built-in roles and permissions from laravel-admin
         // Role table and model.
         // 'roles_table' => 'admin_roles',
         // 'roles_model' => Encore\Admin\Auth\Database\Role::class,

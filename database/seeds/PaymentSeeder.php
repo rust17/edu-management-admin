@@ -9,7 +9,7 @@ class PaymentSeeder extends Seeder
 {
     public function run()
     {
-        // 为所有已支付的账单创建支付记录
+        // Create payment records for all paid invoices
         Invoice::where('status', Invoice::STATUS_PAID)->get()->each(function ($invoice) {
             factory(Payment::class)->create([
                 'invoice_id' => $invoice->id,

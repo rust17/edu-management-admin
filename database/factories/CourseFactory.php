@@ -7,25 +7,27 @@ use Carbon\Carbon;
 
 $factory->define(Course::class, function (Faker $faker) {
     $subjects = [
-        '高等数学', '大学英语', '计算机基础',
-        '数据结构', '操作系统', '数据库原理',
-        '软件工程', '计算机网络', '人工智能',
-        '机器学习', 'Web开发', '移动应用开发',
-        'Python编程', 'Java编程', 'C++编程',
-        '网络安全', '云计算', '大数据分析',
-        '物联网技术', '区块链基础'
+        'Advanced Mathematics', 'College English', 'Computer Fundamentals',
+        'Data Structures', 'Operating Systems', 'Database Principles',
+        'Software Engineering', 'Computer Networks', 'Artificial Intelligence',
+        'Machine Learning', 'Web Development', 'Mobile App Development',
+        'Python Programming', 'Java Programming', 'C++ Programming',
+        'Network Security', 'Cloud Computing', 'Big Data Analytics',
+        'IoT Technology', 'Blockchain Basics'
     ];
 
-    $levels = ['初级', '中级', '高级'];
-    $types = ['理论', '实践', '研讨'];
+    $levels = ['Basic', 'Intermediate', 'Advanced'];
+    $types = ['Theory', 'Practice', 'Seminar'];
 
-    // 生成最近两年内的随机年月（每月1号）
+    // Generate random year-month within last 2 years (1st day of month)
     $date = Carbon::now()->subMonths(rand(0, 24))->startOfMonth();
 
     return [
         'name' => $faker->randomElement($subjects) .
                  $faker->randomElement($levels) .
                  $faker->randomElement($types) . '课程',
+        $faker->randomElement($levels) .
+        $faker->randomElement($types) . ' Course',
         'year_month' => $date,
         'fee' => $faker->randomFloat(2, 100, 10000),
         'teacher_id' => function () {

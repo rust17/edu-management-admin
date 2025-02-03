@@ -18,13 +18,13 @@ class HomeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->title('管理后台')
-            ->description('数据概览')
+            ->title('Admin Dashboard')
+            ->description('Overview')
             ->row(function (Row $row) {
-                // 添加数据统计卡片
+                // Add statistics cards
                 $row->column(3, function (Column $column) {
                     $column->append(new InfoBox(
-                        '学生总数',
+                        'Total Students',
                         'users',
                         'aqua',
                         '/admin/students',
@@ -34,7 +34,7 @@ class HomeController extends Controller
 
                 $row->column(3, function (Column $column) {
                     $column->append(new InfoBox(
-                        '教师总数',
+                        'Total Teachers',
                         'user',
                         'green',
                         '/admin/teachers',
@@ -44,7 +44,7 @@ class HomeController extends Controller
 
                 $row->column(3, function (Column $column) {
                     $column->append(new InfoBox(
-                        '课程总数',
+                        'Total Courses',
                         'book',
                         'yellow',
                         '/admin/courses',
@@ -54,7 +54,7 @@ class HomeController extends Controller
 
                 $row->column(3, function (Column $column) {
                     $column->append(new InfoBox(
-                        '本月新增学生',
+                        'New Students This Month',
                         'user-plus',
                         'red',
                         '/admin/students',
@@ -71,7 +71,7 @@ class HomeController extends Controller
                 $row->column(6, function (Column $column) {
                     $column->append(
                         new Box(
-                            '系统环境',
+                            'System Environment',
                             Dashboard::environment()
                         )
                     );
@@ -80,7 +80,7 @@ class HomeController extends Controller
                 $row->column(6, function (Column $column) {
                     $column->append(
                         new Box(
-                            '依赖信息',
+                            'Dependencies',
                             Dashboard::dependencies()
                         )
                     );

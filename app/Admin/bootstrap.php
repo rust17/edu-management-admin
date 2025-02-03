@@ -22,8 +22,8 @@ use Encore\Admin\Facades\Admin;
 
 Encore\Admin\Form::forget(['map', 'editor']);
 
-// 复写内置 view
+// override view
 app('view')->prependNamespace('admin', resource_path('views/admin/override/'));
 
-// 引入自定义样式
+// import custom style
 Admin::css('/css/admin/custom.css');

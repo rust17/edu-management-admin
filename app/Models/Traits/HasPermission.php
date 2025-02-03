@@ -7,16 +7,16 @@ use Encore\Admin\Auth\Database\Administrator;
 trait HasPermission
 {
     /**
-     * 判断当前用户是否可以看到指定角色的菜单
-     * 由于我们不使用 Laravel-admin 的角色权限系统，这里自己实现一个简单的权限管理
+     * Check if current user can see menus for specified roles
+     * Since we don't use Laravel-admin's role permission system, we implement a simple permission management here
      *
-     * @param Administrator $admin 当前用户
-     * @param string $permissions 菜单权限字符串，例如：admin,teacher
+     * @param Administrator $admin Current user
+     * @param string $permissions Menu permission string, e.g.: admin,teacher
      * @return bool
      */
     public static function visible(Administrator $admin, string $permissions): bool
     {
-        // 教师管理菜单只对管理员可见
+        // Teacher management menu is only visible to admin
         if ($admin->role == 'admin' || in_array($admin->role, explode(',', $permissions))){
             return true;
         }

@@ -13,11 +13,11 @@ if [ $INIT_ADMIN_MENU ]; then
     php artisan admin:init --menu=$INIT_ADMIN_MENU
 fi
 
-# 启动 PHP-FPM
+# Start PHP-FPM
 php-fpm --fpm-config /usr/local/etc/php-fpm.d/www.conf
 echo "PHP-FPM started"
 
-# 启动 Nginx
+# Start Nginx
 nginx -g "daemon off;"
 if [ $? -ne 0 ]; then
     echo "Failed to start Nginx"

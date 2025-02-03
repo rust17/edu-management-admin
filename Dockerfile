@@ -1,6 +1,6 @@
 FROM php:7.3-fpm
 
-# 安装系统依赖
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev
 
-# 清理 apt 缓存
+# Clean apt cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 配置并安装 PHP 扩展
+# Configure and install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
@@ -33,35 +33,35 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 设置工作目录
+# Set working directory
 WORKDIR /var/www/html
 
-# 复制项目文件
+# Copy project files
 COPY . /var/www/html
 
-# 设置目录权限
+# Set directory permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# 安装项目依赖
+# Install project dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# 配置 PHP
+# Configure PHP
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 
-# 复制 Nginx 配置文件
+# Copy Nginx config file
 COPY docker/nginx/default.conf /etc/nginx/sites-enabled/default
 
-# 复制 PHP-FPM 配置
+# Copy PHP-FPM config
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-# 暴露端口
+# Expose port
 EXPOSE 80
 
-# 复制启动脚本
+# Copy startup script
 COPY docker/init.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 
-# 启动服务
+# Start services
 CMD ["/usr/local/bin/init.sh"]

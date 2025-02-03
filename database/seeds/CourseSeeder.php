@@ -8,10 +8,10 @@ class CourseSeeder extends Seeder
 {
     public function run()
     {
-        // 获取所有教师
+        // Get all teachers
         $teachers = User::where('role', 'teacher')->get();
 
-        // 为每个教师创建 2-4 个课程
+        // Create 2-4 courses for each teacher
         $teachers->each(function ($teacher) {
             $coursesCount = rand(2, 4);
             factory(Course::class, $coursesCount)->create([

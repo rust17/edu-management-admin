@@ -28,34 +28,34 @@ class Invoice extends Model
         });
     }
 
-    // 获取关联的课程
+    // Get associated course
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
-    // 获取关联的学生
+    // Get associated student
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');
     }
 
-    // 获取关联的支付
+    // Get associated payment
     public function payment()
     {
         return $this->hasOne(Payment::class);
     }
 
     /**
-     * 生成发票编号
+     * Generate invoice number
      *
      * @return string
      */
     public static function generateNo()
     {
-        // 使用微秒时间戳作为前缀
+        // Use microsecond timestamp as prefix
         $prefix = date('YmdHis') . sprintf('%03d', microtime(true) * 1000 % 1000);
-        // 添加 6 位随机数
+        // Add 6-digit random number
         $suffix = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
         return $prefix . $suffix;

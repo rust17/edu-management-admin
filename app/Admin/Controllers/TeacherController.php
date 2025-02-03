@@ -19,7 +19,7 @@ class TeacherController extends AdminController
      *
      * @var string
      */
-    protected $title = '教师管理';
+    protected $title = 'Teacher Management';
 
     /**
      * Make a grid builder.
@@ -30,22 +30,22 @@ class TeacherController extends AdminController
     {
         $grid = new Grid(new User());
 
-        // 只显示教师角色
+        // Only show teacher role
         $grid->model()->where('role', 'teacher')->orderBy('id', 'desc');
 
         $grid->column('id', 'ID')->sortable();
-        $grid->column('name', '姓名');
-        $grid->column('email', '邮箱');
-        $grid->column('created_at', '创建时间');
-        $grid->column('updated_at', '更新时间');
+        $grid->column('name', 'Name');
+        $grid->column('email', 'Email');
+        $grid->column('created_at', 'Created At');
+        $grid->column('updated_at', 'Updated At');
 
-        // 设置每页显示行数
+        // Set number of items per page
         $grid->paginate(15);
 
-        // 查询过滤
+        // Query filters
         $grid->filter(function (Grid\Filter $filter) {
-            $filter->like('name', '姓名');
-            $filter->like('email', '邮箱');
+            $filter->like('name', 'Name');
+            $filter->like('email', 'Email');
         });
 
         return $grid;
@@ -62,28 +62,24 @@ class TeacherController extends AdminController
         $show = new Show(User::where('role', 'teacher')->findOrFail($id));
 
         $show->field('id', 'ID');
-        $show->field('name', '姓名');
-        $show->field('email', '邮箱');
-        $show->field('created_at', '创建时间');
-        $show->field('updated_at', '更新时间');
+        $show->field('name', 'Name');
+        $show->field('email', 'Email');
+        $show->field('created_at', 'Created At');
+        $show->field('updated_at', 'Updated At');
 
-        // 展示教师的课程信息
-        $show->teacherCourses('开设的课程', function ($courses) {
-            $courses->id('课程ID');
-            $courses->name('课程名称');
-            $courses->year_month('开课时间')->display(function ($yearMonth) {
-                return Carbon::parse($yearMonth)->format('Y年m月');
+        // Show teacher's courses
+        $show->teacherCourses('Teaching Courses', function ($courses) {
+            $courses->id('Course ID');
+            $courses->name('Course Name');
+            $courses->year_month('Start Date')->display(function ($yearMonth) {
+                return Carbon::parse($yearMonth)->format('Y-m');
             });
-            $courses->fee('课程费用')->display(function ($fee) {
-                return "￥{$fee}";
+            $courses->fee('Course Fee')->display(function ($fee) {
+                return "$${fee}";
             });
-            $courses->students('学生数')->display(function ($students) {
+            $courses->students('Student Count')->display(function ($students) {
                 return count($students);
             });
-
-            // 禁用课程列表的增加、删除、编辑按钮
-            $courses->disableCreateButton();
-            $courses->disableActions();
         });
 
         return $show;
@@ -98,33 +94,33 @@ class TeacherController extends AdminController
     {
         $form = new Form(new User());
 
-        $form->text('name', '姓名')->required();
-        $form->email('email', '邮箱')->required();
-        $form->password('password', '密码')
+        $form->text('name', 'Name')->required();
+        $form->email('email', 'Email')->required();
+        $form->password('password', 'Password')
             ->required()
             ->default(function ($form) {
                 return $form->isEditing() ? $form->model()->password : '';
             });
 
-        // 管理后台用户信息
+        // Admin backend user information
         if ($form->isEditing()) {
-            $form->text('adminProfile.username', '管理后台姓名')->required();
-            $form->password('adminProfile.password', '管理后台密码')->required();
+            $form->text('adminProfile.username', 'Admin Username')->required();
+            $form->password('adminProfile.password', 'Admin Password')->required();
         }
 
-        // 设置默认角色为教师
+        // Set default role as teacher
         $form->hidden('role')->default('teacher');
 
-        // 保存前回调
+        // Before saving callback
         $form->saving(function (Form $form) {
-            // 如果密码为空，则不修改密码
+            // Don't modify password if empty
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = Hash::make($form->password);
             }
         });
 
         $form->saved(function (Form $form) {
-            // 当创建教师时，自动创建教师扩展信息，自动创建管理后台用户并分配角色
+            // Create teacher profile when creating new teacher
             if ($form->isCreating()) {
                 Teacher::create([
                     'user_id' => $form->model()->id,
@@ -166,6 +162,6 @@ class TeacherController extends AdminController
             'password' => $adminPassword,
         ]);
 
-        admin_success('保存成功');
+        admin_success('Saved successfully');
     }
 }

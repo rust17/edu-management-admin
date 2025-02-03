@@ -20,19 +20,19 @@ class Course extends Model
         'deleted_at'
     ];
 
-    // 获取课程的教师
+    // Get course teacher
     public function teacher()
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
 
-    // 获取参加该课程的所有学生
+    // Get all students enrolled in this course
     public function students()
     {
         return $this->belongsToMany(User::class, 'course_students', 'course_id', 'student_id');
     }
 
-    // 获取该课程的所有发票
+    // Get all invoices for this course
     public function invoices()
     {
         return $this->hasMany(Invoice::class);

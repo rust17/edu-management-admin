@@ -13,7 +13,7 @@ class StudentsTableSeeder extends Seeder
      */
     public function run()
     {
-        // 为所有学生角色的用户创建学生扩展信息
+        // Create student profiles for all users with student role
         User::where('role', User::ROLE_STUDENT)
             ->whereNotIn('id', Student::pluck('user_id')->toArray())
             ->chunk(100, function ($students) {

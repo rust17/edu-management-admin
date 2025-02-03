@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * 教师模型
- * 主要存放教师的信息，例如：职称、学历。当资源需要频繁使用教师的特定字段时，可以与该表关联。
+ * Teacher Model
+ * Stores teacher information such as title, education. This table can be associated when resources
+ * frequently need specific teacher fields.
  */
 class Teacher extends Model
 {
@@ -18,7 +19,7 @@ class Teacher extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * 获取关联的用户信息
+     * Get associated user information
      */
     public function user()
     {

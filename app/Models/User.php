@@ -44,7 +44,7 @@ class User extends Authenticatable
         parent::boot();
 
         self::deleting(function ($user) {
-            // 删除学生时，需要删除：学生扩展信息、学生账单信息、学生参加的课程信息
+            // When deleting a student, delete: student profile, invoices, and course enrollments
             if ($user->role == self::ROLE_STUDENT) {
                 $user->studentProfile()->delete();
                 $user->invoices->map(function (Invoice $invoice) {
@@ -54,7 +54,7 @@ class User extends Authenticatable
                 CourseStudent::query()->where('student_id', $user->id)->delete();
             }
 
-            // 删除老师时，需要关联删除：老师的管理后台账号、老师的扩展信息、老师的课程信息、老师创建的账单
+            // When deleting a teacher, delete: admin account, teacher profile, courses, and related invoices
             if ($user->role == self::ROLE_TEACHER) {
                 $user->teacherProfile()->delete();
                 $user->teacherCourses->map(function (Course $course) {
@@ -69,26 +69,26 @@ class User extends Authenticatable
         });
     }
 
-    // 获取该教师的所有课程
+    // Get all courses taught by this teacher
     public function teacherCourses()
     {
         return $this->hasMany(Course::class, 'teacher_id');
     }
 
-    // 获取该学生参加的所有课程
+    // Get all courses enrolled by this student
     public function studentCourses()
     {
         return $this->belongsToMany(Course::class, 'course_students', 'student_id', 'course_id');
     }
 
-    // 获取该学生的所有发票
+    // Get all invoices for this student
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'student_id');
     }
 
     /**
-     * 获取教师扩展信息
+     * Get teacher profile information
      */
     public function teacherProfile()
     {
@@ -96,7 +96,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 获取学生扩展信息
+     * Get student profile information
      */
     public function studentProfile()
     {
@@ -104,7 +104,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 获取管理员扩展信息
+     * Get admin profile information
      */
     public function adminProfile()
     {

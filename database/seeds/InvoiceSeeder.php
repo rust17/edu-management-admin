@@ -9,17 +9,17 @@ class InvoiceSeeder extends Seeder
 {
     public function run()
     {
-        // 获取所有课程-学生关联
+        // Get all course-student associations
         $courseStudents = CourseStudent::all();
 
-        // 为每个课程-学生关联创建发票
+        // Create invoice for each course-student association
         $courseStudents->each(function ($courseStudent) {
             $course = Course::find($courseStudent->course_id);
 
             factory(Invoice::class)->create([
                 'course_id' => $courseStudent->course_id,
                 'student_id' => $courseStudent->student_id,
-                'amount' => $course->fee, // 使用课程的费用作为发票金额
+                'amount' => $course->fee, // Use course fee as invoice amount
                 'no' => Invoice::generateNo(),
                 'sent_at' => now(),
             ]);
